@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Автошкола</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+        button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚗 Добро пожаловать в автошколу!</h1>
+    <p>Твой ID: <span id="user-id">...</span></p>
+    <button id="apply-button">Записаться на курс</button>
+
+    <script>
+        // Инициализация Telegram WebApp
+        Telegram.WebApp.ready();
+
+        // Получаем данные пользователя
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        document.getElementById("user-id").textContent = user?.id || "Аноним";
+
+        // Обработка кнопки
+        document.getElementById("apply-button").addEventListener("click", () => {
+            Telegram.WebApp.showAlert("Спасибо за заявку! Мы свяжемся с вами.");
+        });
+    </script>
+</body>
+</html>
