@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Автошкола</title>
+    <meta charset="UTF-8">
+    <title>Запись в автошколу</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            text-align: center;
-        }
-        button {
-            background: #0088cc;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        body { font-family: Arial; padding: 20px; max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 15px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #0088cc; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h1>🚗 Добро пожаловать в автошколу!</h1>
-    <p>Твой ID: <span id="user-id">...</span></p>
-    <button id="apply-button">Записаться на курс</button>
+    <h1>🚗 Запись на курс</h1>
+    <div id="form">
+        <div class="form-group">
+            <input type="text" id="name" placeholder="Ваше имя" required>
+        </div>
+        <div class="form-group">
+            <input type="tel" id="phone" placeholder="Телефон" required>
+        </div>
+        <div class="form-group">
+            <select id="course">
+                <option value="B">Категория B (легковые)</option>
+                <option value="A">Категория A (мотоциклы)</option>
+            </select>
+        </div>
+        <button onclick="submitForm()">Отправить заявку</button>
+    </div>
 
     <script>
-        // Инициализация Telegram WebApp
         Telegram.WebApp.ready();
-
-        // Получаем данные пользователя
-        const user = Telegram.WebApp.initDataUnsafe.user;
-        document.getElementById("user-id").textContent = user?.id || "Аноним";
-
-        // Обработка кнопки
-        document.getElementById("apply-button").addEventListener("click", () => {
-            Telegram.WebApp.showAlert("Спасибо за заявку! Мы свяжемся с вами.");
-        });
+        
+        function submitForm() {
+            const data = {
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                course: document.getElementById("course").value
+            };
+            
+            if (!data.name || !data.phone) {
+                Telegram.WebApp.showAlert("Заполните все поля!");
+                return;
+            }
+            
+            // Отправляем данные в чат бота
+            Telegram.WebApp.sendData(JSON.stringify(data));
+            Telegram.WebApp.close();
+        }
     </script>
 </body>
 </html>
